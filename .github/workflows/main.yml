@@ -42,9 +42,9 @@ jobs:
             git fetch --all &&
             git reset --hard origin/main &&
             git pull origin main &&
-            poetry install &&
-            poetry run python -m manage collectstatic --clear --noinput &&
-            poetry run python -m manage migrate --noinput &&
+            /home/ubuntu/.local/bin/poetry install &&
+            /home/ubuntu/.local/bin/poetry run python -m manage collectstatic --clear --noinput &&
+            /home/ubuntu/.local/bin/poetry run python -m manage migrate --noinput &&
             tmux kill-session -t backend;
-            tmux new -s backend -d 'poetry run python -m manage runserver'
+            tmux new -s backend -d '/home/ubuntu/.local/bin/poetry run python -m manage runserver'
           '
