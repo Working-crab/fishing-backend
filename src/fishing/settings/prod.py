@@ -8,3 +8,12 @@ ALLOWED_HOSTS = [
 ]
 
 STATIC_ROOT = '/var/www/fishing/django/'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': '/data/mysql.cnf',
+        },
+    }
+}
