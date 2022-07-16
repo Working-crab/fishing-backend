@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'graphene_django',
     'rest',
     'frontend',
 ]
@@ -85,6 +86,9 @@ DATABASES = {
     }
 }
 
+GRAPHENE = {
+    "SCHEMA": "rest.schema.schema"
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
