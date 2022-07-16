@@ -15,7 +15,7 @@ class Product(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField(blank=True, default="")
     price = models.PositiveBigIntegerField(help_text="Милликопейки (100000 = 1 руб.)")
-    main_picture = models.ForeignKey('Picture', on_delete=models.SET_NULL, null=True, related_name='+')
+    main_picture = models.ForeignKey('Picture', on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
     properties = models.ManyToManyField(Property, through='ProductProperty', related_name='products')
 
 class Picture(models.Model):
@@ -25,7 +25,7 @@ class Picture(models.Model):
 class ProductProperty(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
-    num_value = models.DecimalField(max_digits=20, decimal_places=6, null=True)
+    num_value = models.DecimalField(max_digits=20, decimal_places=6, null=True, blank=True)
     string_value = models.CharField(max_length=50, blank=True, default="")  # also works as num_value units
 
     class Meta:
@@ -38,7 +38,7 @@ class Order(models.Model):
         OPEN = 'OPEN', _("Open")
         CLOSED = 'CLOSED', _("Closed")
 
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='orders')
     products = models.ManyToManyField(Product, through='OrderItem', related_name='+')
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.OPEN)
 
