@@ -9,6 +9,8 @@ ALLOWED_HOSTS = [
 
 STATIC_ROOT = '/var/www/fishing/django/'
 
+MEDIA_ROOT = '/var/www/fishing/uploads/'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
