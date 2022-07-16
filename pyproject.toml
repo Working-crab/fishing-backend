@@ -14,6 +14,7 @@ mysqlclient = [
 ]
 graphene-django = { git = "https://github.com/graphql-python/graphene-django.git", rev = "f6ec068" }
 graphql-core = "<3.2.0"
+django-filter = "22.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1"
