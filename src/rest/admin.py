@@ -1,10 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django import forms
+from django.db.models import ImageField
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
-from rest import models
+from rest import models, widgets
+from rest import fields
 
 def link_to(field_name, value=None, short_description=None):
     def field_link(self, obj):
@@ -15,6 +17,18 @@ def link_to(field_name, value=None, short_description=None):
     field_link.short_description = short_description if short_description is not None else field_name
     return field_link
 
+class ReadOnlyPictureForm(forms.ModelForm):
+    image = fields.ReadOnlyImageField()
+
+    def __init__(self, *args, **kwargs):
+        super(). __init__(*args, **kwargs)
+
+class PicturesInline(admin.TabularInline):
+    model = models.Picture
+    formfield_overrides = {
+        ImageField: {'widget': widgets.ReadOnlyOneImagePreviewWidget}
+    }
+
 class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -24,6 +38,9 @@ class ProductForm(forms.ModelForm):
 class ProductAdmin(admin.ModelAdmin):
     form = ProductForm
     list_display = ('name', 'price')
+    inlines = [
+        PicturesInline
+    ]
 
 @admin.register(models.Picture)
 class PictureAdmin(admin.ModelAdmin):
