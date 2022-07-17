@@ -8,8 +8,14 @@ class User(AbstractUser):
 class Category(models.Model):
     name = models.CharField(max_length=80)
 
+    class Meta:
+        verbose_name_plural = "categories"
+
 class Property(models.Model):
     name = models.CharField(max_length=80)
+
+    class Meta:
+        verbose_name_plural = "properties"
 
 class Product(models.Model):
     name = models.CharField(max_length=128)
@@ -23,8 +29,8 @@ class Picture(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='pictures')
 
 class ProductProperty(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_properties')
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='product_properties')
     num_value = models.DecimalField(max_digits=20, decimal_places=6, null=True, blank=True)
     string_value = models.CharField(max_length=50, blank=True, default="")  # also works as num_value units
 
@@ -32,6 +38,7 @@ class ProductProperty(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['product', 'property'], name="unique_product_property")
         ]
+        verbose_name_plural = "product properties"
 
 class Order(models.Model):
     class Status(models.TextChoices):
@@ -43,6 +50,6 @@ class Order(models.Model):
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.OPEN)
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_items')
     quantity = models.PositiveSmallIntegerField(default=1)
