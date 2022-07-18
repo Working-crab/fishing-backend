@@ -22,6 +22,11 @@
 {% endif %}
   <div class="img-item-container{% if inline_admin_form.original or inline_admin_form.show_url %} has_original{% endif %}{% if forloop.last and inline_admin_formset.has_add_permission %} empty-form last-related{% endif %}">
   {% if inline_admin_form.form.non_field_errors %}{{ inline_admin_form.form.non_field_errors }}{% endif %}
+  {% with object_pk=inline_admin_form.original.pk %}
+  {% if object_pk %}
+  <a href="{% url 'admin:rest_picture_change' object_pk %}">
+  {% endif %}
+  {% endwith %}
   {% for fieldset in inline_admin_form %}
     {% for line in fieldset %}
             {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
@@ -39,6 +44,7 @@
             {% endfor %}
     {% endfor %}
   {% endfor %}
+  </a>
   {% if inline_admin_formset.formset.can_delete and inline_admin_formset.has_delete_permission and inline_admin_form.original %}<br><span class="delete">{{ inline_admin_form.deletion_field.field }} {{ inline_admin_form.deletion_field.label_tag }}</span>{% endif %}
   </div>
 
