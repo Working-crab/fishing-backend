@@ -20,11 +20,18 @@ def link_to(field_name, value=None, short_description=None):
 class ReadOnlyPictureForm(forms.ModelForm):
     image = fields.ReadOnlyImageField(label='images')
 
+    def has_changed(self):
+        return False
+
+    def is_valid(self):
+        return True
+
 class PicturesInline(admin.TabularInline):
     template = "rest/pictures_inline.html"
     model = models.Picture
     form = ReadOnlyPictureForm
     extra = 0
+    can_delete = False
     formfield_overrides = {
         ImageField: {'widget': widgets.ReadOnlyOneImagePreviewWidget}
     }

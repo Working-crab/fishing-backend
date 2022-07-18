@@ -7,3 +7,8 @@ class ImageSetField(fields.Field):
 
 class ReadOnlyImageField(fields.Field):
     widget = ReadOnlyOneImagePreviewWidget
+
+    def __init__(self, *args, **kwargs):
+        kwargs['disabled'] = True
+        kwargs['required'] = False
+        super().__init__(*args, **kwargs)
