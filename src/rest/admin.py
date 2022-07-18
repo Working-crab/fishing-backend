@@ -38,6 +38,8 @@ class ProductPropertiesInline(admin.TabularInline):
     show_original = False
 
 class ProductForm(forms.ModelForm):
+    price = forms.IntegerField(widget=widgets.PriceMilliCentsWidget)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['main_picture'].queryset = models.Picture.objects.filter(product_id=self.instance.id)

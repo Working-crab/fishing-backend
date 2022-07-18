@@ -1,0 +1,2 @@
+<input type="{{ widget.type }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}><input type="hidden" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}{% include "django/forms/widgets/attrs.html" %}><span style="margin-left: 2em;">NaN</span>
+

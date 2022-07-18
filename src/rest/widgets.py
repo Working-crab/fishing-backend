@@ -31,3 +31,6 @@ class CreateFileInputPreviewImageWidget(widgets.ClearableFileInput):
             return self.create_w.render(name, value, attrs, renderer)
         else:
             return self.preview_w.render(name, value, attrs, renderer)
+
+class PriceMilliCentsWidget(widgets.NumberInput):
+    template_name = 'rest/widgets/price_milli_cents.html'
