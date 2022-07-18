@@ -8,3 +8,10 @@
 .inline-group .tabular tr.has_original.hide_original td {
     padding-top: 10px;
 }
+.img-item-container {
+    display: block;
+}
+.img-item-container.has_original {
+    display: inline-block;
+    text-align: center;
+}

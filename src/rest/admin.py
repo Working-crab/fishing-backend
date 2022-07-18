@@ -20,7 +20,7 @@ def link_to(field_name, value=None, short_description=None):
 class ReadOnlyPictureForm(forms.ModelForm):
     image = fields.CreatePreviewImageField(label='images')
 
-class PicturesInline(admin.TabularInline):
+class PicturesInline(admin.StackedInline):
     template = "rest/pictures_inline.html"
     model = models.Picture
     form = ReadOnlyPictureForm
