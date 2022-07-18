@@ -29,6 +29,11 @@
         {{ inline_admin_form.form.non_field_errors }}
         {% endif %}
 
+        {% with object_pk=inline_admin_form.original.pk %}
+        {% if object_pk %}
+        <a href="{% url 'admin:rest_picture_change' object_pk %}">
+        {% endif %}
+        {% endwith %}
         {% for fieldset in inline_admin_form %}
           {% for line in fieldset %}
             {% for field in line %}
@@ -41,6 +46,7 @@
             {% endfor %}
           {% endfor %}
         {% endfor %}
+        </a>
      {% endfor %}
      </div>
 </fieldset>

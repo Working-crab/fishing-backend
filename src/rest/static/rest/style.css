@@ -1,4 +1,7 @@
-.img-container > img {
+.img-container img {
     margin: 10px;
     height: 100px;
+}
+.img-container a:focus {
+    text-decoration: none;
 }
