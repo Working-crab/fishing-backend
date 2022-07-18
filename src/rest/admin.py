@@ -38,6 +38,12 @@ class PicturesInline(admin.TabularInline):
         result = super().media + forms.Media(css={'all': ['rest/style.css']})
         return result
 
+class ProductPropertiesInline(admin.TabularInline):
+    template = "rest/product_properties_inline.html"
+    model = models.ProductProperty
+    extra = 0
+    show_original = False
+
 class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -48,7 +54,8 @@ class ProductAdmin(admin.ModelAdmin):
     form = ProductForm
     list_display = ('name', 'price')
     inlines = [
-        PicturesInline
+        PicturesInline,
+        ProductPropertiesInline
     ]
 
 @admin.register(models.Picture)
