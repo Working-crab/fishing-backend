@@ -18,16 +18,21 @@ def link_to(field_name, value=None, short_description=None):
     return field_link
 
 class ReadOnlyPictureForm(forms.ModelForm):
-    image = fields.ReadOnlyImageField()
-
-    def __init__(self, *args, **kwargs):
-        super(). __init__(*args, **kwargs)
+    image = fields.ReadOnlyImageField(label='images')
 
 class PicturesInline(admin.TabularInline):
+    template = "rest/pictures_inline.html"
     model = models.Picture
+    form = ReadOnlyPictureForm
+    extra = 0
     formfield_overrides = {
         ImageField: {'widget': widgets.ReadOnlyOneImagePreviewWidget}
     }
+
+    @property
+    def media(self):
+        result = super().media + forms.Media(css={'all': ['rest/style.css']})
+        return result
 
 class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
