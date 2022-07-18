@@ -1,9 +1,6 @@
 from django.forms import fields
 
-from rest.widgets import ReadOnlyImagePreviewWidget, ReadOnlyOneImagePreviewWidget
-
-class ImageSetField(fields.Field):
-    widget = ReadOnlyImagePreviewWidget
+from rest.widgets import ReadOnlyOneImagePreviewWidget
 
 class ReadOnlyImageField(fields.Field):
     widget = ReadOnlyOneImagePreviewWidget

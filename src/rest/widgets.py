@@ -1,22 +1,7 @@
 from django.forms import widgets
 
-class ReadOnlyImagePreviewWidget(widgets.Widget):
-    template_name = 'rest/widgets/image_preview.html'
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def render(self, *args, **kwargs):
-        return super().render(*args, **kwargs)
-
 class ReadOnlyOneImagePreviewWidget(widgets.Widget):
     template_name = 'rest/widgets/one_image_preview.html'
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def render(self, *args, **kwargs):
-        return super().render(*args, **kwargs)
 
     def is_initial(self, value):
         """

@@ -32,9 +32,6 @@ class PicturesInline(admin.TabularInline):
     form = ReadOnlyPictureForm
     extra = 0
     can_delete = False
-    formfield_overrides = {
-        ImageField: {'widget': widgets.ReadOnlyOneImagePreviewWidget}
-    }
 
     @property
     def media(self):
