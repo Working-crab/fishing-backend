@@ -18,20 +18,13 @@ def link_to(field_name, value=None, short_description=None):
     return field_link
 
 class ReadOnlyPictureForm(forms.ModelForm):
-    image = fields.ReadOnlyImageField(label='images')
-
-    def has_changed(self):
-        return False
-
-    def is_valid(self):
-        return True
+    image = fields.CreatePreviewImageField(label='images')
 
 class PicturesInline(admin.TabularInline):
     template = "rest/pictures_inline.html"
     model = models.Picture
     form = ReadOnlyPictureForm
     extra = 0
-    can_delete = False
 
     @property
     def media(self):

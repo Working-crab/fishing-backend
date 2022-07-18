@@ -1,3 +1,4 @@
+from venv import create
 from django.forms import widgets
 
 class ReadOnlyOneImagePreviewWidget(widgets.Widget):
@@ -15,3 +16,18 @@ class ReadOnlyOneImagePreviewWidget(widgets.Widget):
         """
         if self.is_initial(value):
             return value
+
+class CreateFileInputPreviewImageWidget(widgets.ClearableFileInput):
+    create_widget = widgets.ClearableFileInput
+    preview_widget = ReadOnlyOneImagePreviewWidget
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.create_w = self.create_widget(self.attrs)
+        self.preview_w = self.preview_widget(self.attrs)
+
+    def render(self, name, value, attrs=None, renderer=None):
+        if not self.create_w.is_initial(value):
+            return self.create_w.render(name, value, attrs, renderer)
+        else:
+            return self.preview_w.render(name, value, attrs, renderer)
