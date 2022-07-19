@@ -25,6 +25,8 @@ class PropertyNode(DjangoObjectType):
         }
 
 class ProductNode(DjangoObjectType):
+    formatted_price = graphene.String()
+
     class Meta:
         model = Product
         interface = (graphene.Node, )
@@ -36,6 +38,9 @@ class ProductNode(DjangoObjectType):
             "price": ["lt", "lte", "gt", "gte", "range"],
             "properties__id": ["exact", "in"]
         }
+
+    def resolve_formatted_price(self, info):
+        return "{:.2f}".format(self.price / 100000.0).replace('.', ',')
 
 class PictureNode(DjangoObjectType):
     class Meta:
