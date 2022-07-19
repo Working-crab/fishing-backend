@@ -37,11 +37,17 @@ class ProductPropertiesInline(admin.TabularInline):
     extra = 0
     show_original = False
 
+class PriceField(forms.IntegerField):
+    def __init__(self, *args, **kwargs):
+        price_field = models.Product.price.field.formfield()
+        kwargs['min_value'] = price_field.min_value
+        kwargs['max_value'] = price_field.max_value
+        kwargs['widget'] = widgets.PriceMilliCentsWidget({'text_label': 'В милликопейках: '})
+        kwargs['help_text'] = "Руб., значение хранится в милликопейках (1 руб. = 100000)"
+        super().__init__(*args, **kwargs)
+
 class ProductForm(forms.ModelForm):
-    price = forms.IntegerField(
-        widget=widgets.PriceMilliCentsWidget({'text_label': 'В милликопейках: '}),
-        help_text="Руб., значение хранится в милликопейках (1 руб. = 100000)"
-    )
+    price = PriceField()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
