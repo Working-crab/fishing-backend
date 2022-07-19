@@ -34,3 +34,19 @@ class CreateFileInputPreviewImageWidget(widgets.ClearableFileInput):
 
 class PriceMilliCentsWidget(widgets.NumberInput):
     template_name = 'rest/widgets/price_milli_cents.html'
+    text_label = ''
+
+    def __init__(self, attrs=None):
+        if attrs is not None:
+            attrs = attrs.copy()
+            self.text_label = attrs.pop("text_label", self.text_label)
+        super().__init__(attrs)
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['attrs_without_id'] = dict(
+            filter(lambda x: x[0] != 'id', context['widget']['attrs'].items())
+        )
+        context['widget']['id'] = context['widget']['attrs'].get('id')
+        context['widget']['text_label'] = self.text_label
+        return context

@@ -38,11 +38,19 @@ class ProductPropertiesInline(admin.TabularInline):
     show_original = False
 
 class ProductForm(forms.ModelForm):
-    price = forms.IntegerField(widget=widgets.PriceMilliCentsWidget)
+    price = forms.IntegerField(
+        widget=widgets.PriceMilliCentsWidget({'text_label': 'В милликопейках: '}),
+        help_text="Руб., значение хранится в милликопейках (1 руб. = 100000)"
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['main_picture'].queryset = models.Picture.objects.filter(product_id=self.instance.id)
+
+    @property
+    def media(self):
+        result = super().media + forms.Media(js=['rest/widgets.js'])
+        return result
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
