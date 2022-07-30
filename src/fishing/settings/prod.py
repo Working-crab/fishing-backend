@@ -3,6 +3,7 @@ from fishing.settings.base import *
 DEBUG = False
 
 ALLOWED_HOSTS = [
+    "91.200.146.5",
     "13.48.31.237",
     "diwos.ru",
 ]
@@ -13,9 +14,10 @@ MEDIA_ROOT = '/var/www/fishing/uploads/'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'OPTIONS': {
-            'read_default_file': '/data/mysql.cnf',
+            'service': 'my_postgres',
+            'passfile': '/home/ubuntu/.pgpass',
         },
     }
 }
