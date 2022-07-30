@@ -6,6 +6,13 @@ ALLOWED_HOSTS = [
     "91.200.146.5",
     "13.48.31.237",
     "diwos.ru",
+    "www.diwos.ru",
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://diwos.ru",
+    "http://www.diwos.ru",
+    "https://diwos.ru",
+    "https://www.diwos.ru",
 ]
 
 STATIC_ROOT = '/var/www/fishing/django/'
