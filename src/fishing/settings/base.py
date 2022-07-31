@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -89,10 +90,19 @@ DATABASES = {
 }
 
 REST_REGISTRATION = {
-    'REGISTER_VERIFICATION_ENABLED': False,
-    'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
-    'RESET_PASSWORD_VERIFICATION_ENABLED': False,
+    'REGISTER_VERIFICATION_URL': 'https://diwos.ru/api/accounts/verify-registration/',
+    'RESET_PASSWORD_VERIFICATION_URL': 'https://diwos.ru/api/accounts/reset-password/',
+    'REGISTER_EMAIL_VERIFICATION_URL': 'https://diwos.ru/api/accounts/verify-email/',
+
+    'VERIFICATION_FROM_EMAIL': 'notifications@sim2.cloud',
 }
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'notifications@sim2.cloud'
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD', '')
+EMAIL_USE_SSL = True
+EMAIL_TIMEOUT = 10
 
 GRAPHENE = {
     "SCHEMA": "rest.schema.schema"
