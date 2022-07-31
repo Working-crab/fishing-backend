@@ -87,6 +87,18 @@ python-versions = ">=3.7"
 Django = ">=3.2"
 
 [[package]]
+name = "django-rest-registration"
+version = "0.7.2"
+description = "User registration REST API, based on django-rest-framework"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+Django = ">=2.0"
+djangorestframework = ">=3.3"
+
+[[package]]
 name = "djangorestframework"
 version = "3.13.1"
 description = "Web APIs for Django, made easy."
@@ -326,7 +338,7 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "125731bea05743381e0498e69a21b7f84d505c59b35efb9175dfa5104003263a"
+content-hash = "52de0a57d908a215af3f14151f0da7b1c40d536c2123bf815720676529530472"
 
 [metadata.files]
 aniso8601 = []
@@ -343,6 +355,7 @@ colorama = [
 django = []
 django-cleanup = []
 django-filter = []
+django-rest-registration = []
 djangorestframework = [
     {file = "djangorestframework-3.13.1-py3-none-any.whl", hash = "sha256:24c4bf58ed7e85d1fe4ba250ab2da926d263cd57d64b03e8dcef0ac683f8b1aa"},
     {file = "djangorestframework-3.13.1.tar.gz", hash = "sha256:0c33407ce23acc68eca2a6e46424b008c9c02eceb8cf18581921d0092bc1f2ee"},
