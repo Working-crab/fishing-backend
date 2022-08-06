@@ -76,6 +76,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "django-cors-headers"
+version = "3.13.0"
+description = "django-cors-headers is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Django = ">=3.2"
+
+[[package]]
 name = "django-filter"
 version = "22.1"
 description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
@@ -338,7 +349,7 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "52de0a57d908a215af3f14151f0da7b1c40d536c2123bf815720676529530472"
+content-hash = "91e3e030d09f13c8113b3ad82830367d009e63bd1e0ebbf05c73622afd943a22"
 
 [metadata.files]
 aniso8601 = []
@@ -354,6 +365,7 @@ colorama = [
 ]
 django = []
 django-cleanup = []
+django-cors-headers = []
 django-filter = []
 django-rest-registration = []
 djangorestframework = [
