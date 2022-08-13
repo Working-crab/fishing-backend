@@ -103,12 +103,12 @@ REST_REGISTRATION = {
     'RESET_PASSWORD_VERIFICATION_URL': 'https://diwos.ru/api/accounts/reset-password/',
     'REGISTER_EMAIL_VERIFICATION_URL': 'https://diwos.ru/api/accounts/verify-email/',
 
-    'VERIFICATION_FROM_EMAIL': 'notifications@sim2.cloud',
+    'VERIFICATION_FROM_EMAIL': 'info@diwos.ru',
 }
 
-EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'notifications@sim2.cloud'
+EMAIL_HOST_USER = 'info@diwos.ru'
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD', '')
 EMAIL_USE_SSL = True
 EMAIL_TIMEOUT = 10
