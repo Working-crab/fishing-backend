@@ -16,7 +16,9 @@ from graphene_django.views import GraphQLView as OriginalGraphQLView
 from rest_registration import signals
 from rest_registration.api.views.login import perform_login
 from rest_registration.api.views.register import VerifyRegistrationSerializer
+from rest_registration.api.views.register_email import VerifyEmailSerializer
 from rest_registration.api.views.register import process_verify_registration_data
+from rest_registration.api.views.register_email import process_verify_email_data
 from rest_registration.decorators import api_view_serializer_class
 from rest_registration.utils.responses import get_ok_response
 from rest_registration.settings import registration_settings
@@ -57,3 +59,13 @@ def verify_registration(request):
         extra_data = perform_login(request, user)
     # return get_ok_response(_("User verified successfully"), extra_data=extra_data)
     return redirect('index')
+
+@api_view_serializer_class(VerifyEmailSerializer)
+@api_view(['GET'])
+@permission_classes(registration_settings.NOT_AUTHENTICATED_PERMISSION_CLASSES)
+def verify_email(request):
+    '''
+    Verify email via signature.
+    '''
+    process_verify_email_data(request.query_params, serializer_context={'request': request})
+    return get_ok_response(_("Email verified successfully"))
