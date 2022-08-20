@@ -8,5 +8,6 @@ urlpatterns = [
     path('', views.TestView.as_view(), name='test'),
     path('graphql', csrf_exempt(views.GraphQLView.as_view(graphiql=True))),
     path('csrftoken/', views.CsrfTokenView.as_view()),
+    path('accounts/verify-registration/', views.verify_registration, name='verify-registration'),
     path('accounts/', include('rest_registration.api.urls')),
 ]

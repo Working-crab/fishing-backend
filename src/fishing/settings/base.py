@@ -104,6 +104,8 @@ REST_REGISTRATION = {
     'REGISTER_EMAIL_VERIFICATION_URL': 'https://diwos.ru/api/accounts/verify-email/',
 
     'VERIFICATION_FROM_EMAIL': 'info@diwos.ru',
+    'REGISTER_VERIFICATION_AUTO_LOGIN': True,
+    'REGISTER_VERIFICATION_ONE_TIME_USE': True,
 }
 
 EMAIL_HOST = 'smtp.mail.ru'
