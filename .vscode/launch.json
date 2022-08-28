@@ -1,0 +1,46 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "migrate",
+      "type": "python",
+      "request": "launch",
+      "module": "manage",
+      "args": [
+          "migrate"
+      ],
+      "env": {
+          "DJANGO_SETTINGS_MODULE": "fishing.settings.dev"
+      },
+      "justMyCode": false
+    },
+    {
+      "name": "runserver",
+      "type": "python",
+      "request": "launch",
+      "module": "manage",
+      "args": [
+          "runserver"
+      ],
+      "env": {
+          "DJANGO_SETTINGS_MODULE": "fishing.settings.dev",
+          "EMAIL_PASSWORD": "skdkRpca4UHPUiMX2Abv"
+      },
+      "django": true,
+      "justMyCode": false
+    },
+    {
+      "name": "create_superuser",
+      "type": "python",
+      "request": "launch",
+      "module": "manage",
+      "args": [
+          "createsuperuser"
+      ],
+      "env": {
+          "DJANGO_SETTINGS_MODULE": "fishing.settings.dev"
+      },
+      "justMyCode": false
+    },
+  ]
+}
