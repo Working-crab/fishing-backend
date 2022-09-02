@@ -31,6 +31,7 @@ class PictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Picture
         fields = ['id', 'image']
+        extra_kwargs = {'image': {'use_url': False}}
 
 class ProductSerializer(serializers.ModelSerializer):
     formatted_price = serializers.CharField(required=False, read_only=True, source='get_formatted_price')

@@ -8,6 +8,7 @@ from django.utils.translation import gettext as _
 
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.mixins import ListModelMixin
 from rest_framework.generics import GenericAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError
@@ -74,18 +75,22 @@ def verify_email(request):
     return get_ok_response(_("Email verified successfully"))
 
 
-class CartViewSet(GenericViewSet):
-    serializer_class = serializers.OrderSerializer
+class CartViewSet(ListModelMixin, GenericViewSet):
+    serializer_class = serializers.ProductSerializer
 
-    def get_object(self):
-        return self.get_queryset()
+    def get_cart(self):
+        if self.request.user.is_authenticated:
+            orders = models.Order.objects.filter(
+                user=self.request.user, status=str(models.Order.Status.OPEN)
+            )
+            if orders:
+                return orders.first()
+            else:
+                return models.Order.objects.create(user=self.request.user, status=models.Order.Status.OPEN)
+        return None
 
     def get_queryset(self):
-        if self.request.user.is_authenticated:
-            return models.Order.objects.filter(user=self.request.user, status=str(models.Order.Status.OPEN)).first()
-        else:
-            return None
-
-    def list(self, request, *args, **kwargs):
-        serializer = self.get_serializer(self.get_object())
-        return Response(serializer.data)
+        cart = self.get_cart()
+        if cart:
+            return cart.products
+        return models.Product.objects.none()
