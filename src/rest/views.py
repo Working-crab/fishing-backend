@@ -1,4 +1,5 @@
 from asyncio import mixins
+from django.db import transaction
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -12,7 +13,8 @@ from rest_framework.mixins import ListModelMixin
 from rest_framework.generics import GenericAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, action
+from rest_framework import status
 
 from graphene_django.views import GraphQLView as OriginalGraphQLView
 
@@ -76,7 +78,13 @@ def verify_email(request):
 
 
 class CartViewSet(ListModelMixin, GenericViewSet):
-    serializer_class = serializers.ProductSerializer
+    serializer_class = serializers.OrderItemSerializer
+
+    def get_serializer(self, *args, **kwargs):
+        if self.action == 'add_items':
+            #kwargs['many'] = True
+            return serializers.AddOrderItemSerializer(*args, **kwargs)
+        return super().get_serializer(*args, **kwargs)
 
     def get_cart(self):
         if self.request.user.is_authenticated:
@@ -92,5 +100,15 @@ class CartViewSet(ListModelMixin, GenericViewSet):
     def get_queryset(self):
         cart = self.get_cart()
         if cart:
-            return cart.products
+            return cart.order_items
         return models.Product.objects.none()
+
+    @action(detail=False, methods=['POST'], url_path='add_items')
+    def add_items(self, request):
+        serializer = self.get_serializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+        with transaction.atomic():
+            for order_item in serializer.validated_data:
+                product = order_item['product_id']
+                quantity = order_item['quantity']
+        return Response(status=status.HTTP_204_NO_CONTENT)

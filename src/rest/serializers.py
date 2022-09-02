@@ -43,6 +43,17 @@ class ProductSerializer(serializers.ModelSerializer):
         model = models.Product
         fields = ['id', 'name', 'description', 'price', 'formatted_price', 'main_picture', 'properties', 'pictures']
 
+class OrderItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(required=False, read_only=True)
+
+    class Meta:
+        model = models.OrderItem
+        fields = ['product', 'quantity']
+
+class AddOrderItemSerializer(serializers.Serializer):
+    product_id = serializers.PrimaryKeyRelatedField(queryset=models.Product.objects.all())
+    quantity = serializers.IntegerField(min_value=1)
+
 class OrderSerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True, read_only=True)
 
