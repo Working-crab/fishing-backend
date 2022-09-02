@@ -14,3 +14,37 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
         fields = ['is_authenticated', 'username', 'first_name', 'last_name', 'email', 'phone']
+
+class TestCartSerializer(serializers.Serializer):
+    test = serializers.CharField(required=False)
+
+class ProductPropertiesSerializer(serializers.ModelSerializer):
+    property_name = serializers.CharField(source='name')
+
+    class Meta:
+        model = models.ProductProperty
+        fields = [
+            'property_name',
+            'num_value', 'string_value']
+
+class PictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Picture
+        fields = ['id', 'image']
+
+class ProductSerializer(serializers.ModelSerializer):
+    formatted_price = serializers.CharField(required=False, read_only=True, source='get_formatted_price')
+    main_picture = PictureSerializer(required=False, read_only=True)
+    properties = ProductPropertiesSerializer(many=True, read_only=True)
+    pictures = PictureSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = models.Product
+        fields = ['id', 'name', 'description', 'price', 'formatted_price', 'main_picture', 'properties', 'pictures']
+
+class OrderSerializer(serializers.ModelSerializer):
+    products = ProductSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = models.Order
+        fields = ['id', 'status', 'products']

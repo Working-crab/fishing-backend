@@ -1,3 +1,4 @@
+from asyncio import mixins
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -6,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.utils.translation import gettext as _
 
 from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
 from rest_framework.generics import GenericAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError
@@ -24,6 +26,7 @@ from rest_registration.utils.responses import get_ok_response
 from rest_registration.settings import registration_settings
 
 from rest import serializers
+from rest import models
 
 class TestView(APIView):
     def get(self, request):
@@ -69,3 +72,20 @@ def verify_email(request):
     '''
     process_verify_email_data(request.query_params, serializer_context={'request': request})
     return get_ok_response(_("Email verified successfully"))
+
+
+class CartViewSet(GenericViewSet):
+    serializer_class = serializers.OrderSerializer
+
+    def get_object(self):
+        return self.get_queryset()
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return models.Order.objects.filter(user=self.request.user, status=str(models.Order.Status.OPEN)).first()
+        else:
+            return None
+
+    def list(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.get_object())
+        return Response(serializer.data)

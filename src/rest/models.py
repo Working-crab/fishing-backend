@@ -23,6 +23,9 @@ class Property(models.Model):
     def __str__(self):
         return self.name
 
+def get_formatted_price(price):
+    return "{:.2f}".format(price / 100000.0).replace('.', ',')
+
 class Product(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField(blank=True, default="")
@@ -32,6 +35,9 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_formatted_price(self):
+        return "{:.2f}".format(self.price / 100000.0).replace('.', ',')
 
 class Picture(models.Model):
     image = models.ImageField()

@@ -40,7 +40,7 @@ class ProductNode(DjangoObjectType):
         }
 
     def resolve_formatted_price(self, info):
-        return "{:.2f}".format(self.price / 100000.0).replace('.', ',')
+        return self.get_formatted_price()
 
 class PictureNode(DjangoObjectType):
     class Meta:
