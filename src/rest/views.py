@@ -108,7 +108,13 @@ class CartViewSet(ListModelMixin, GenericViewSet):
         serializer = self.get_serializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
         with transaction.atomic():
+            cart = self.get_cart()
             for order_item in serializer.validated_data:
                 product = order_item['product_id']
                 quantity = order_item['quantity']
+
+                if cart.products.contains(product):
+                    raise ParseError('product already in cart (change quantity instead)')
+                else:
+                    cart.products.add(product, through_defaults={'quantity': quantity})
         return Response(status=status.HTTP_204_NO_CONTENT)
