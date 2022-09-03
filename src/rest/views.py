@@ -89,7 +89,7 @@ class CartAPIView(ListModelMixin, GenericAPIView):
         if self.request.user.is_authenticated:
             orders = models.Order.objects.filter(
                 user=self.request.user, status=str(models.Order.Status.OPEN)
-            ) # .select_related('order_items', 'products')
+            ).prefetch_related('order_items', 'products')
             if orders:
                 return orders.first()
             else:
@@ -125,5 +125,6 @@ class CartAPIView(ListModelMixin, GenericAPIView):
                         product_in_cart.delete()
                 else:
                     # This is an add operation
-                    cart.products.add(product, through_defaults={'quantity': quantity})
+                    if quantity > 0:
+                        cart.products.add(product, through_defaults={'quantity': quantity})
         return Response(status=status.HTTP_204_NO_CONTENT)
