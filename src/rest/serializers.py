@@ -52,7 +52,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class AddOrderItemSerializer(serializers.Serializer):
     product_id = serializers.PrimaryKeyRelatedField(queryset=models.Product.objects.all())
-    quantity = serializers.IntegerField(min_value=1)
+    quantity = serializers.IntegerField(min_value=0)
 
 class OrderSerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True, read_only=True)

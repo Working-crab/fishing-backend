@@ -8,7 +8,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.utils.translation import gettext as _
 
 from rest_framework.views import APIView
-from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import ListModelMixin
 from rest_framework.generics import GenericAPIView, RetrieveAPIView
 from rest_framework.response import Response
@@ -77,11 +76,11 @@ def verify_email(request):
     return get_ok_response(_("Email verified successfully"))
 
 
-class CartViewSet(ListModelMixin, GenericViewSet):
+class CartAPIView(ListModelMixin, GenericAPIView):
     serializer_class = serializers.OrderItemSerializer
 
     def get_serializer(self, *args, **kwargs):
-        if self.action == 'add_items':
+        if self.request.method == 'POST':
             #kwargs['many'] = True
             return serializers.AddOrderItemSerializer(*args, **kwargs)
         return super().get_serializer(*args, **kwargs)
@@ -90,7 +89,7 @@ class CartViewSet(ListModelMixin, GenericViewSet):
         if self.request.user.is_authenticated:
             orders = models.Order.objects.filter(
                 user=self.request.user, status=str(models.Order.Status.OPEN)
-            )
+            ) # .select_related('order_items', 'products')
             if orders:
                 return orders.first()
             else:
@@ -103,8 +102,10 @@ class CartViewSet(ListModelMixin, GenericViewSet):
             return cart.order_items
         return models.Product.objects.none()
 
-    @action(detail=False, methods=['POST'], url_path='add_items')
-    def add_items(self, request):
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
         with transaction.atomic():
@@ -113,8 +114,16 @@ class CartViewSet(ListModelMixin, GenericViewSet):
                 product = order_item['product_id']
                 quantity = order_item['quantity']
 
-                if cart.products.contains(product):
-                    raise ParseError('product already in cart (change quantity instead)')
+                product_in_cart = cart.order_items.filter(product=product)
+                if product_in_cart:
+                    # This is a modify/delete operation
+                    if quantity > 0:
+                        # modify
+                        product_in_cart.update(quantity=quantity)
+                    else:
+                        # delete
+                        product_in_cart.delete()
                 else:
+                    # This is an add operation
                     cart.products.add(product, through_defaults={'quantity': quantity})
         return Response(status=status.HTTP_204_NO_CONTENT)
