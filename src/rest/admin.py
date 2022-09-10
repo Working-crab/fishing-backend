@@ -70,6 +70,9 @@ class ProductAdmin(admin.ModelAdmin):
         ProductPropertiesInline
     ]
 
+    class ImportForm(forms.Form):
+        file = forms.FileField()
+
     def get_urls(self):
         return [
             path(
@@ -80,11 +83,13 @@ class ProductAdmin(admin.ModelAdmin):
         ] + super().get_urls()
 
     def import_products(self, request, form_url=""):
+        form = ProductAdmin.ImportForm()
+        rendered_form = form.render()
         context = {
             "title": _("Import products"),
             #"adminForm": adminForm,
             "form_url": form_url,
-            #"form": form,
+            "form": rendered_form,
             #"is_popup": (IS_POPUP_VAR in request.POST or IS_POPUP_VAR in request.GET),
             #"is_popup_var": IS_POPUP_VAR,
             "add": True,
