@@ -15,3 +15,12 @@
     display: inline-block;
     text-align: center;
 }
+.object-tools a.uploadlink {
+    padding-left: 16px;
+    background-image: url(/static/rest/upload.svg);
+}
+.object-tools a.viewsitelink, .object-tools a.uploadlink {
+    background-repeat: no-repeat;
+    background-position: right 7px center;
+    padding-right: 26px;
+}

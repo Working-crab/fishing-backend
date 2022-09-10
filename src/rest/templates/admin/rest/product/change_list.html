@@ -1,0 +1,30 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "admin/css/changelists.css" %}">
+  {% if cl.formset %}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
+  {% endif %}
+  {% if cl.formset or action_form %}
+    <script src="{% url 'admin:jsi18n' %}"></script>
+  {% endif %}
+  {{ media.css }}
+  {% if not actions_on_top and not actions_on_bottom %}
+    <style>
+      #changelist table thead th:first-child {width: inherit}
+    </style>
+  {% endif %}
+  <link rel="stylesheet" type="text/css" href="{% static "rest/style.css" %}">
+{% endblock %}
+
+{% block object-tools-items %}
+  {% change_list_object_tools %}
+  <li>
+    <a href="/admin/rest/product/add/" class="uploadlink">
+      Import products
+    </a>
+  </li>
+{% endblock %}
+
