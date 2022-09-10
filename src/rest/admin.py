@@ -10,6 +10,7 @@ from django.utils.translation import gettext_lazy as _
 
 from rest import models, widgets
 from rest import fields
+from rest.import_products import sheet_id_from_url, import_products_from_google_sheet
 
 def link_to(field_name, value=None, short_description=None):
     def field_link(self, obj):
@@ -86,6 +87,8 @@ class ProductAdmin(admin.ModelAdmin):
         if request.method == "POST":
             form = ProductAdmin.ImportForm(request.POST)
             if form.is_valid():
+                sheet_id = sheet_id_from_url(form.cleaned_data['file'])
+                import_products_from_google_sheet(sheet_id)
                 return HttpResponse(str(form.data['file']))
         else:
             form = ProductAdmin.ImportForm()

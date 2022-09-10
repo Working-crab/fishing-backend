@@ -21,6 +21,9 @@ psycopg2 = [
 ]
 django-rest-registration = "^0.7.2"
 django-cors-headers = "^3.13"
+google-api-python-client = "^2.60.0"
+google-auth-httplib2 = "^0.1.0"
+google-auth-oauthlib = "^0.5.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1"
