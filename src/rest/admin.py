@@ -2,8 +2,11 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django import forms
 from django.db.models import ImageField
-from django.urls import reverse
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.urls import reverse, path
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 
 from rest import models, widgets
 from rest import fields
@@ -66,6 +69,36 @@ class ProductAdmin(admin.ModelAdmin):
         PicturesInline,
         ProductPropertiesInline
     ]
+
+    def get_urls(self):
+        return [
+            path(
+                "import/",
+                self.admin_site.admin_view(self.import_products),
+                name="rest_product_import",
+            ),
+        ] + super().get_urls()
+
+    def import_products(self, request, form_url=""):
+        context = {
+            "title": _("Import products"),
+            #"adminForm": adminForm,
+            "form_url": form_url,
+            #"form": form,
+            #"is_popup": (IS_POPUP_VAR in request.POST or IS_POPUP_VAR in request.GET),
+            #"is_popup_var": IS_POPUP_VAR,
+            "add": True,
+            "change": False,
+            "has_delete_permission": False,
+            "has_change_permission": True,
+            "has_absolute_url": False,
+            "opts": models.Product._meta,
+            #"original": user,
+            "save_as": False,
+            "show_save": True,
+            **self.admin_site.each_context(request),
+        }
+        return render(request, "admin/rest/product/import.html", context)
 
 @admin.register(models.Picture)
 class PictureAdmin(admin.ModelAdmin):
