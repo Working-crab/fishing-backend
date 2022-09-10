@@ -71,7 +71,7 @@ class ProductAdmin(admin.ModelAdmin):
     ]
 
     class ImportForm(forms.Form):
-        file = forms.FileField()
+        file = forms.CharField()
 
     def get_urls(self):
         return [
@@ -83,7 +83,12 @@ class ProductAdmin(admin.ModelAdmin):
         ] + super().get_urls()
 
     def import_products(self, request, form_url=""):
-        form = ProductAdmin.ImportForm()
+        if request.method == "POST":
+            form = ProductAdmin.ImportForm(request.POST)
+            if form.is_valid():
+                return HttpResponse(str(form.data['file']))
+        else:
+            form = ProductAdmin.ImportForm()
         rendered_form = form.render()
         context = {
             "title": _("Import products"),
